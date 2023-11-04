@@ -33,10 +33,11 @@
                     echo 'Successful login, welcome '.$data['firstname']." ".$data["lastname"];
                     session_start();
                     $_SESSION["email"] = $data["email"];
+                    $_SESSION["firstname"] = $data["firstname"];
                 }
                 else
                 {
-                    echo 'Wrong credentials';
+                    header("Location: ../frontEnd/access.php?error=1");
                 }
                 break;
             }

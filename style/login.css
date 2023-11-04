@@ -54,3 +54,19 @@
     display: flex;
     width: 180px;
 }
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #f2f2f2;
+    font-size: 18px;
+    padding: 10px;
+}
+
+header h1{
+    font-size: 1.5em;
+    font-style:italic;
+}
