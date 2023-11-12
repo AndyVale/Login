@@ -2,14 +2,14 @@
 <html lang="en">
     <head>
         <title>shhh...Private page</title>
-        <link rel="stylesheet" type="text/css" href="../../style/login.css">
+        <link rel="stylesheet" type="text/css" href="../style/login.css">
     </head>
     <body>
         <?php
         session_start();
             if(empty($_SESSION["email"]))
             {
-                header("location: ./access.php");
+                header("location: ./loginForm.php");
             }
             else
             {

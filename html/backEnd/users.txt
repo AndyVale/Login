@@ -1,2 +1,0 @@
-{"firstname":"Mario","lastname":"Mario","email":"mariosuper@mario.com","pass":"$2y$10$\/6mnBxD\/U2VAydKc9XafkeJFav7ZgbUJEylXokzcqlY7DZbl5oS.G","badge":"S1234567"}
-{"firstname":"Luigi","lastname":"Mario","email":"luigisuper@mario.com","pass":"$2y$10$8KLf36SFKvqQ3nxIOWGsIO.L2ul3NXkVwgTqJ8olzjuHAKWOw\/Eae","badge":"S1234987","idNumber":"AA12345AB"}
