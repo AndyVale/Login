@@ -46,11 +46,12 @@
         $data['firstname'] = $con->real_escape_string(htmlentities($data['firstname']));
         $data['lastname'] = $con->real_escape_string(htmlentities($data['lastname']));
 
-        $query = "INSERT INTO utenti (firstname, lastname, email, pass) VALUES ('$data[firstname]', '$data[lastname]', '$data[email]', '$data[pass]')";//TODO: aggiungere campi facoltativi
-        $con -> real_escape_string($query);
-        //echo $query;
+        $query = "INSERT INTO utenti (firstname, lastname, email, pass) VALUES (?, ?, ?, ?)";//TODO: aggiungere campi facoltativi
+        $stmt = $con -> prepare($query);
+        $stmt -> bind_param('ssss', $data['firstname'], $data['lastname'], $data['email'], $data['pass']);
         try{
-            $con -> query($query);
+            $stmt -> execute();//lancia eccezioni pure questa
+            $result = $stmt -> get_result();
             echo "Successful registration, welcome $data[firstname] $data[lastname]";
             session_start();
             $_SESSION["email"] = $data["email"];
@@ -58,8 +59,8 @@
         }
         catch(mysqli_sql_exception $e)
         {
-            //die("Email already in use");
-            die($e->getMessage());
+            error_log($e->getMessage(), 3, "../my-errors.log");
+            die("ERROR 500");
         }
        $con -> close();
     }

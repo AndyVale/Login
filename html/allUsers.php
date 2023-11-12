@@ -38,6 +38,8 @@
                     echo "<td>".$row['idNumber']."</td>";
                     echo "</tr>";
                 }
+                $res -> free();
+                $con -> close();
             ?>
         </tbody>
     </table>
