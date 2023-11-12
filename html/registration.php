@@ -12,7 +12,7 @@
     }
 
 //sanitize data:
-    $data = array('firstname' => htmlentities(trim($_POST['firstname'])), 'lastname' => htmlentities(trim($_POST['lastname'])), 'email' => htmlentities($_POST['email']), 'pass' => password_hash(trim($_POST['pass']), PASSWORD_DEFAULT));
+    $data = array('firstname' => trim($_POST['firstname']), 'lastname' => trim($_POST['lastname']), 'email' => $_POST['email'], 'pass' => password_hash(trim($_POST['pass']), PASSWORD_DEFAULT));
 
 //not required fields (to use some regex):
     if(!empty($_POST['badge']))//Badge Number
@@ -41,8 +41,14 @@
     if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))//TODO: questo potrebbe farlo il database?
     {
         include("connect.php");
-        $query = "INSERT INTO utenti (firstname, lastname, email, pass) VALUES ('$data[firstname]', '$data[lastname]', '$data[email]', '$data[pass]')";//TODO: aggiungere campi facoltativi
         
+        $data['email'] = $con->real_escape_string(htmlentities(strtolower($data['email'])));
+        $data['firstname'] = $con->real_escape_string(htmlentities($data['firstname']));
+        $data['lastname'] = $con->real_escape_string(htmlentities($data['lastname']));
+
+        $query = "INSERT INTO utenti (firstname, lastname, email, pass) VALUES ('$data[firstname]', '$data[lastname]', '$data[email]', '$data[pass]')";//TODO: aggiungere campi facoltativi
+        $con -> real_escape_string($query);
+        //echo $query;
         try{
             $con -> query($query);
             echo "Successful registration, welcome $data[firstname] $data[lastname]";
@@ -55,7 +61,7 @@
             //die("Email already in use");
             die($e->getMessage());
         }
-       
+       $con -> close();
     }
     else
     {

@@ -12,13 +12,31 @@
     }
 //login test:
     include ("connect.php");
-    $query = "SELECT * FROM utenti WHERE email = '$_POST[email]'";
+    $email = $con->real_escape_string($_POST["email"]);
+    $query = "SELECT pass, firstname, lastname, role FROM utenti WHERE email = '$email'";
     try{
-        $con -> query($query);
+        
+        $data = $con -> query($query)-> fetch_assoc();
+        //echo $con ->affected_rows;
         if($con->affected_rows == 1)
         {
-            $data = $con->query($query)->fetch_assoc();
-            echo "welcome $data[nome] $data[cognome] $data[email]";
+            if(password_verify($_POST["pass"], $data["pass"]))
+            {
+                session_start();
+                $_SESSION["email"] = $email;
+                $_SESSION["firstname"] = $data["firstname"];
+                $_SESSION["lastname"] = $data["lastname"];
+                $_SESSION["role"] = $data["role"];
+                echo "welcome $data[firstname] $data[lastname]";
+            }
+            else
+            {
+                die("Controllo credenziali fallito");
+            }
+        }
+        else
+        {
+            die("Impossibile accedere, si prega di riprovare più tardi");
         }
     }catch(mysqli_sql_exception $e)
     {
