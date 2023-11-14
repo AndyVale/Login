@@ -1,4 +1,6 @@
 <?php
+    const COOKIE_NAME = "rememberMe";
+    
 //required fields check:
     if(empty($_POST["pass"]) || empty($_POST["email"]))
     {
@@ -11,6 +13,7 @@
         die('Wrong credentials');
     }
 
+    include ("rememberMe.php");
     include ("connect.php");
     $query = "SELECT pass, firstname, lastname, role, email FROM utenti WHERE email = ?";
     $stmt = $con -> prepare($query);
@@ -28,8 +31,23 @@
                 $_SESSION["firstname"] = $data["firstname"];
                 $_SESSION["lastname"] = $data["lastname"];
                 $_SESSION["role"] = $data["role"];
-                header("location: ./privatePage.php");
                 $stmt -> close();
+                //if $_POST["rememberMe"] is set, remember the user:
+                if(!empty($_POST[COOKIE_NAME])){//se arriva l'informazione in POST per ricordare il cookie
+                    $cookie_value = password_hash(random_bytes(12), PASSWORD_DEFAULT);//hash del cookie "casuale"
+                    $expireTime = time() + (86400 * 30);//30 giorni
+                    setcookie(COOKIE_NAME, $cookie_value, $expireTime); // 86400 = 1 day
+                    $query = "UPDATE utenti SET rememberMe = ?, expireDate = ? WHERE email = ?";
+                    $stmt = $con -> prepare($query);
+                    $stmt -> bind_param('sis', $cookie_value, $expireTime, $_POST["email"]);
+                    $stmt -> execute();
+                    if($con->affected_rows != 1) {
+                        die("Impossibile impostare il cookie");
+                    }
+                    $stmt -> close();
+                }
+                
+                header("location: ./privatePage.php");
                 $con -> close();
             }
             else
