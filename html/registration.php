@@ -2,7 +2,7 @@
 //required fields check:
     if(empty($_POST["firstname"]) || empty($_POST["lastname"]) || empty($_POST["email"]) || empty($_POST["pass"]) || empty($_POST["confirm"]))
     {
-        die("Check input data, some are missing");
+        header("location: ./registrationForm.php");
     }
 
     //integrity check:

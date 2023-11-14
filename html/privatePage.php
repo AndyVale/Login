@@ -7,7 +7,7 @@
     <body>
         <?php
         session_start();
-            if(empty($_SESSION["email"]))
+            if(empty($_SESSION["firstname"]))
             {
                 header("location: ./loginForm.php");
             }

@@ -3,10 +3,14 @@
     if(!empty($_SESSION['firstname']))
     {
         $name = $_SESSION['firstname'];
-        echo "<span>Home</span><span>Welcome $name</span><span>Logout</span></header>";
+        if($_SESSION['role'] == 1){
+            echo "<a href='privatePage.php'><span>PrivatePage</span></a><span>Welcome $name</span><a href='logout.php'><span>Logout</span></a><a href='allUsers.php'><span>All Users</span></a></header>";            
+        }else{
+            echo "<a href='privatePage.php'><span>PrivatePage</span></a><span>Welcome $name</span><a href='logout.php'><span>Logout</span></a></header>";
+        }
     }
     else
     {
-        echo "<span>Register</span><span>Login</span><span>Home</span></header>";
+        echo "<span>Register</span><span>Login</span></header>";
     }
 ?>
